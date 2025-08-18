@@ -1,6 +1,13 @@
-# tecweb
-Matrícula: 202262224
-Nombre: Aldair Iglesias
-Materia: Desarrollo de Aplicaciones Web
-Periodo: Ago-Dic 2025
-Descripción: Repositorio para prácticas y proyectos del curso.
+# Tecweb
+
+## Datos del estudiante
+- **Matrícula:** 202262224  
+- **Nombre:** Aldair Iglesias  
+
+## Información de la materia
+- **Materia:** Desarrollo de Aplicaciones Web  
+- **Periodo:** Ago–Dic 2025  
+
+## Descripción
+Repositorio para prácticas y proyectos del curso.
+
