@@ -3,50 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <title>Concurso Tenis Mike® – ¡Chidos mis Tenis!</title>
+  <style>
+    fieldset{border:2px solid #ddd;border-radius:10px;padding:1rem;margin:1rem 0}
+    legend{font-weight:700}
+  </style>
 </head>
 <body>
   <h1>Concurso Tenis Mike® – ¡Chidos mis Tenis!</h1>
   <p>Participa describiendo por qué tus tenis son únicos y personaliza tu diseño ideal.</p>
 
   <form action="http://52.43.117.247/neo/classroom/tw/concurso.php" method="post">
-    <h2>Información del Participante</h2>
-    <ul>
-      <li>Nombre: <input type="text" name="name" required></li>
-      <li>Dirección de E-mail: <input type="email" name="email" required></li>
-      <li>Número Telefónico: <input type="tel" name="phone" placeholder="Ej. 222 123 4567"></li>
-      <li>Mis tenis son tan feos porque…<br>
-        <textarea name="reason" rows="4" cols="60" maxlength="300" placeholder="Cuéntanos tu historia (máx. 300 caracteres)"></textarea>
-      </li>
-    </ul>
+    <fieldset>
+      <legend>Información Personal</legend>
+      <ul>
+        <li>Nombre: <input type="text" name="name" required></li>
+        <li>Dirección de E-mail: <input type="email" name="email" required></li>
+        <li>Número Telefónico: <input type="tel" name="phone" placeholder="Ej. 222 123 4567"></li>
+        <li>Mis tenis son tan feos porque…<br>
+          <textarea name="reason" rows="4" cols="60" maxlength="300" placeholder="Cuéntanos tu historia (máx. 300 caracteres)"></textarea>
+        </li>
+      </ul>
+    </fieldset>
 
-    <h2>Diseña tus Mike personalizados</h2>
-    <ul>
-      <li><strong>Color (escoge uno):</strong>
+    <fieldset>
+      <legend>Diseño personalizado del Tenis</legend>
+
+      <fieldset>
+        <legend>Color (escoge uno):</legend>
         <ul>
           <li><input type="radio" name="color" value="red" checked> Rojo</li>
           <li><input type="radio" name="color" value="blue"> Azul</li>
           <li><input type="radio" name="color" value="black"> Negro</li>
           <li><input type="radio" name="color" value="silver"> Plateado</li>
         </ul>
-      </li>
+      </fieldset>
 
-      <li><strong>Características (escoge tantas como quieras):</strong>
+      <fieldset>
+        <legend>Características (escoge tantas como quieras):</legend>
         <ul>
           <li><input type="checkbox" name="features[]" value="laces"> Cordones brillantes</li>
           <li><input type="checkbox" name="features[]" value="metal_logo" checked> Logo metálico</li>
           <li><input type="checkbox" name="features[]" value="lighted_sole"> Suela luminosa</li>
           <li><input type="checkbox" name="features[]" value="wifi"> Wi-Fi integrado</li>
         </ul>
-      </li>
+      </fieldset>
 
-      <li><strong>Talla:</strong><br>
+      <fieldset>
+        <legend>Talla</legend>
+        <label>Las medidas reflejan el estándar masculino:</label><br>
         <select name="size" size="1" required>
           <option value="" disabled selected>Selecciona tu talla</option>
           <option>3</option><option>4</option><option>5</option><option>6</option>
           <option>7</option><option>8</option><option>9</option><option>10</option><option>11</option>
         </select>
-      </li>
-    </ul>
+      </fieldset>
+    </fieldset>
 
     <p>
       <input type="submit" value="Enviar registro">
