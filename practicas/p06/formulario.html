@@ -5,7 +5,6 @@
   <title>Concurso Tenis Mike® – ¡Chidos mis Tenis!</title>
 </head>
 <body>
-  <!-- Estos encabezados NO van dentro del <form> -->
   <h1>Concurso Tenis Mike® – ¡Chidos mis Tenis!</h1>
   <p>Participa describiendo por qué tus tenis son únicos y personaliza tu diseño ideal.</p>
 
@@ -17,6 +16,27 @@
       <li>Número Telefónico: <input type="tel" name="phone" placeholder="Ej. 222 123 4567"></li>
       <li>Mis tenis son tan feos porque…<br>
         <textarea name="reason" rows="4" cols="60" maxlength="300" placeholder="Cuéntanos tu historia (máx. 300 caracteres)"></textarea>
+      </li>
+    </ul>
+
+    <h2>Diseña tus Mike personalizados</h2>
+    <ul>
+      <li><strong>Color (escoge uno):</strong>
+        <ul>
+          <li><input type="radio" name="color" value="red" checked> Rojo</li>
+          <li><input type="radio" name="color" value="blue"> Azul</li>
+          <li><input type="radio" name="color" value="black"> Negro</li>
+          <li><input type="radio" name="color" value="silver"> Plateado</li>
+        </ul>
+      </li>
+
+      <li><strong>Características (escoge tantas como quieras):</strong>
+        <ul>
+          <li><input type="checkbox" name="features[]" value="laces"> Cordones brillantes</li>
+          <li><input type="checkbox" name="features[]" value="metal_logo" checked> Logo metálico</li>
+          <li><input type="checkbox" name="features[]" value="lighted_sole"> Suela luminosa</li>
+          <li><input type="checkbox" name="features[]" value="wifi"> Wi-Fi integrado</li>
+        </ul>
       </li>
     </ul>
 
