@@ -5,7 +5,25 @@
   <title>Concurso Tenis Mike® – ¡Chidos mis Tenis!</title>
 </head>
 <body>
+  <!-- Estos encabezados NO van dentro del <form> -->
   <h1>Concurso Tenis Mike® – ¡Chidos mis Tenis!</h1>
   <p>Participa describiendo por qué tus tenis son únicos y personaliza tu diseño ideal.</p>
+
+  <form action="http://52.43.117.247/neo/classroom/tw/concurso.php" method="post">
+    <h2>Información del Participante</h2>
+    <ul>
+      <li>Nombre: <input type="text" name="name" required></li>
+      <li>Dirección de E-mail: <input type="email" name="email" required></li>
+      <li>Número Telefónico: <input type="tel" name="phone" placeholder="Ej. 222 123 4567"></li>
+      <li>Mis tenis son tan feos porque…<br>
+        <textarea name="reason" rows="4" cols="60" maxlength="300" placeholder="Cuéntanos tu historia (máx. 300 caracteres)"></textarea>
+      </li>
+    </ul>
+
+    <p>
+      <input type="submit" value="Enviar registro">
+      <input type="reset" value="Limpiar">
+    </p>
+  </form>
 </body>
 </html>
