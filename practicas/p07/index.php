@@ -18,6 +18,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
       <ul>
         <li><a href="?e=1&amp;numero=35">Ejercicio 1 (múltiplo de 5 y 7)</a></li>
         <li><a href="?e=2">Ejercicio 2 (impar, par, impar)</a></li>
+        <li><a href="?e=3&amp;div=7">Ejercicio 3 (while / do-while)</a></li>
       </ul>
     </nav>
 
@@ -63,6 +64,25 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
       if ($e === 0) {
         echo '<p>Selecciona un ejercicio en el menú superior.</p>';
       }
+
+            // ------------------ Ejercicio 3 ------------------
+      if ($e === 3) {
+          echo '<h2>Ejercicio 3: Primer múltiplo con while y do-while</h2>';
+          $div = isset($_GET['div']) ? (int)$_GET['div'] : null;
+          if ($div === null || $div <= 0) {
+              echo '<p>Proporciona un divisor en la URL, ejemplo: <code>?e=3&amp;div=7</code></p>';
+          } else {
+              $w = encontrarMultiploWhile($div);
+              $d = encontrarMultiploDoWhile($div);
+
+              echo '<h3>Versión while</h3>';
+              echo '<p>Número: <strong>' . $w['numero'] . '</strong> — Intentos: ' . $w['intentos'] . '</p>';
+
+              echo '<h3>Versión do-while</h3>';
+              echo '<p>Número: <strong>' . $d['numero'] . '</strong> — Intentos: ' . $d['intentos'] . '</p>';
+          }
+      }
+
       ?>
     </div>
   </body>
