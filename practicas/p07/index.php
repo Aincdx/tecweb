@@ -20,6 +20,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
         <li><a href="?e=2">Ejercicio 2 (impar, par, impar)</a></li>
         <li><a href="?e=3&amp;div=7">Ejercicio 3 (while / do-while)</a></li>
         <li><a href="?e=4">Ejercicio 4 (ASCII 97–122)</a></li>
+        <li><a href="?e=5">Ejercicio 5 (POST: edad/sexo)</a></li>
       </ul>
     </nav>
 
@@ -104,8 +105,52 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
         }
         echo '</tbody></table>';
       }
+            //-- ------------------ Ejercicio 5 ------------------ -->
+      if ($e === 5): ?>
+        <h2>Ejercicio 5: Validación por edad y sexo (HTML5 POST → XHTML)</h2>
 
-      ?>
+        <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+          <?php
+            // “Solicitud” recibida: procesamos y devolvemos XHTML
+            $edad = isset($_POST['edad']) ? (int)$_POST['edad'] : null;
+            $sexo = isset($_POST['sexo']) ? (string)$_POST['sexo'] : '';
+            $msg  = validarPersona($edad, $sexo);
+            $clase = str_starts_with($msg, 'Bienvenida') ? 'ok' : 'error';
+          ?>
+          <p><strong>Datos recibidos:</strong> Edad=
+            <?= htmlspecialchars((string)$edad, ENT_QUOTES, 'UTF-8') ?>,
+            Sexo=<?= htmlspecialchars($sexo, ENT_QUOTES, 'UTF-8') ?></p>
+          <p class="<?= $clase ?>">
+            <?= htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') ?>
+          </p>
+          <p><a href="?e=5">Nueva solicitud</a></p>
+
+        <?php else: ?>
+          <!-- “Solicitud” HTML5 -->
+          <form method="post" action="?e=5" class="form" novalidate="novalidate">
+            <fieldset>
+              <legend>Datos</legend>
+
+              <label for="edad">Edad:</label>
+              <input type="number" name="edad" id="edad"
+                    min="0" max="120" step="1" required="required"
+                    inputmode="numeric" />
+
+              <label for="sexo">Sexo:</label>
+              <select name="sexo" id="sexo" required="required">
+                <option value="">— Selecciona —</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+                <option value="otro">Otro</option>
+              </select>
+            </fieldset>
+
+            <button type="submit">Enviar</button>
+          </form>
+        <?php endif; ?>
+      <?php endif; ?>
+
+      
     </div>
   </body>
 </html>
