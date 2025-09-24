@@ -19,6 +19,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
         <li><a href="?e=1&amp;numero=35">Ejercicio 1 (múltiplo de 5 y 7)</a></li>
         <li><a href="?e=2">Ejercicio 2 (impar, par, impar)</a></li>
         <li><a href="?e=3&amp;div=7">Ejercicio 3 (while / do-while)</a></li>
+        <li><a href="?e=4">Ejercicio 4 (ASCII 97–122)</a></li>
       </ul>
     </nav>
 
@@ -81,6 +82,27 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
               echo '<h3>Versión do-while</h3>';
               echo '<p>Número: <strong>' . $d['numero'] . '</strong> — Intentos: ' . $d['intentos'] . '</p>';
           }
+      }
+            // ------------------ Ejercicio 4 ------------------
+      if ($e === 4) {
+        echo '<h2>Ejercicio 4: Arreglo ASCII 97–122</h2>';
+        $arr = arregloAsciiAZ();
+
+        // Tabla con for (índices 97..122)
+        echo '<h3>Con for</h3>';
+        echo '<table class="tabla"><thead><tr><th>Índice</th><th>Valor</th></tr></thead><tbody>';
+        for ($i = 97; $i <= 122; $i++) {
+          echo '<tr><td>' . $i . '</td><td>' . htmlspecialchars($arr[$i], ENT_QUOTES, 'UTF-8') . '</td></tr>';
+        }
+        echo '</tbody></table>';
+
+        // Tabla con foreach (recorriendo el arreglo asociativo)
+        echo '<h3>Con foreach</h3>';
+        echo '<table class="tabla"><thead><tr><th>Índice</th><th>Valor</th></tr></thead><tbody>';
+        foreach ($arr as $k => $v) {
+          echo '<tr><td>' . (int)$k . '</td><td>' . htmlspecialchars($v, ENT_QUOTES, 'UTF-8') . '</td></tr>';
+        }
+        echo '</tbody></table>';
       }
 
       ?>

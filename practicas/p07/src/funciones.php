@@ -40,3 +40,12 @@ function encontrarMultiploDoWhile(int $div): array {
     } while ($n % $div !== 0);
     return ['numero' => $n, 'intentos' => $intentos];
 }
+
+// E4: arreglo con índices 97..122 y valores 'a'..'z'
+function arregloAsciiAZ(): array {
+    $arr = [];
+    for ($i = 97; $i <= 122; $i++) {
+        $arr[$i] = chr($i);
+    }
+    return $arr;
+}
