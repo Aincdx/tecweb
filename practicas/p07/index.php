@@ -21,6 +21,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
         <li><a href="?e=3&amp;div=7">Ejercicio 3 (while / do-while)</a></li>
         <li><a href="?e=4">Ejercicio 4 (ASCII 97–122)</a></li>
         <li><a href="?e=5">Ejercicio 5 (POST: edad/sexo)</a></li>
+        <li><a href="?e=6">Ejercicio 6 (Parque vehicular)</a></li>
       </ul>
     </nav>
 
@@ -149,6 +150,83 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
           </form>
         <?php endif; ?>
       <?php endif; ?>
+        
+      
+      <?php if ($e === 6): ?>
+        <h2>Ejercicio 6: Parque vehicular (HTML5 POST → XHTML)</h2>
+        <p>Usa uno de los formularios para enviar tu <em>solicitud</em> (HTML5). La <em>respuesta</em> es XHTML generado por PHP.</p>
+
+        <!-- Solicitud: Buscar por matrícula -->
+        <form method="post" action="?e=6" class="form" novalidate="novalidate">
+          <fieldset>
+            <legend>Búsqueda por matrícula</legend>
+
+            <label for="matricula">Matrícula (formato LLLNNNN):</label>
+            <input
+              type="text"
+              name="matricula"
+              id="matricula"
+              maxlength="7"
+              required="required"
+              pattern="^[A-Za-z]{3}\d{4}$"
+              title="3 letras seguidas de 4 dígitos, ej. ABC1234"
+              placeholder="ABC1234"
+              inputmode="latin" />
+          </fieldset>
+          <button type="submit" name="accion" value="buscar">Buscar</button>
+        </form>
+
+        <!-- Solicitud: Ver todo -->
+        <form method="post" action="?e=6" class="form">
+          <fieldset>
+            <legend>Listado completo</legend>
+            <p>Enviar esta solicitud para mostrar todos los registros.</p>
+          </fieldset>
+          <button type="submit" name="accion" value="todo">Ver todos</button>
+        </form>
+
+        <hr />
+
+        <?php
+          // Procesar la “solicitud” HTML5 y generar la respuesta XHTML
+          if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+              $parque = parqueVehicular();
+              $accion = isset($_POST['accion']) ? $_POST['accion'] : '';
+
+              if ($accion === 'buscar') {
+                  $mat = isset($_POST['matricula']) ? strtoupper(trim($_POST['matricula'])) : '';
+                  $valida = (bool)preg_match('/^[A-Z]{3}\d{4}$/', $mat);
+
+                  if (!$valida) {
+                      echo '<p class="error">Formato inválido. Usa 3 letras y 4 dígitos (ej. ABC1234).</p>';
+                  } else {
+                      $info = buscarPorMatricula($parque, $mat);
+                      if ($info === null) {
+                          echo '<p class="error">No se encontró la matrícula solicitada.</p>';
+                      } else {
+                          echo renderVehiculo($mat, $info);
+                      }
+                  }
+
+              } elseif ($accion === 'todo') {
+                  echo '<h3>Todos los autos registrados (' . count($parque) . ')</h3>';
+                  foreach ($parque as $m => $info) {
+                      echo renderVehiculo($m, $info);
+                  }
+
+                  // Imprime la estructura del arreglo como texto seguro para XHTML
+                  echo '<h3>Estructura del arreglo (print_r)</h3>';
+                  echo '<pre>' . htmlspecialchars(print_r($parque, true), ENT_QUOTES, 'UTF-8') . '</pre>';
+
+              } else {
+                  echo '<p>Envía una solicitud con alguno de los formularios.</p>';
+              }
+          } else {
+              echo '<p>Envía una solicitud con alguno de los formularios para ver la respuesta.</p>';
+          }
+        ?>
+      <?php endif; ?>
+
 
       
     </div>
