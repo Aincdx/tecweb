@@ -1,0 +1,119 @@
+body {
+  font-family: system-ui, Arial, sans-serif;
+  max-width: 920px;
+  margin: 24px auto;
+  line-height: 1.5;
+}
+
+nav ul {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+nav a {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-decoration: none;
+  background: #f8f8f8;
+}
+
+hr {
+  margin: 16px 0;
+}
+
+.ok {
+  color: #0a7a28;
+  font-weight: 600;
+}
+
+.error {
+  color: #b00020;
+  font-weight: 600;
+}
+
+code {
+  background: #f6f6f6;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.tabla {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.tabla th,
+.tabla td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+  max-width: 460px;
+  margin: 10px 0 18px 0;
+}
+.form label { font-weight: 600; }
+.form input, .form select, .form button {
+  padding: 6px 8px;
+}
+fieldset {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+}
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 10px 0;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+  max-width: 460px;
+  margin: 10px 0 18px 0;
+}
+.form label { font-weight: 600; }
+.form input, .form select, .form button { padding: 6px 8px; }
+fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 10px; }
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 10px 0;
+}
+
+/* ===== Nav pills sin encimarse ===== */
+nav { margin-bottom: 12px; }
+nav ul {
+  display: flex;
+  flex-wrap: wrap;      /* permite que las pastillas bajen a otra fila */
+  gap: 12px;            /* espacio uniforme entre filas y columnas */
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  list-style: none;
+}
+nav li { margin: 0; }
+
+nav a {
+  display: inline-block;         /* la pastilla mide lo que necesita */
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 999px;          /* look de “pill” */
+  background: #f8f9fa;
+  text-decoration: none;
+  line-height: 1.2;
+  white-space: nowrap;           /* evita saltos dentro de la pastilla */
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+}
+
+nav a:hover { background: #ffffff; }
