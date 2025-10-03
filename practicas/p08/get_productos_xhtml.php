@@ -1,22 +1,25 @@
 <?php
-// --- CONEXIÓN ---
-$DB_PASS = 'Rextow24.a'; 
-@$link = new mysqli('127.0.0.1','root',$DB_PASS,'marketzone');
+// ====== CONEXIÓN ======
+$DB_PASS = 'Rextow24.a';
+@$link = new mysqli('127.0.0.1', 'root', $DB_PASS, 'marketzone');
 if ($link->connect_errno) { die('Falló la conexión: '.$link->connect_error); }
 $link->set_charset('utf8mb4');
 
+// ====== PARÁMETRO ======
 $tope = isset($_GET['tope']) ? intval($_GET['tope']) : 10;
 
+// ====== CONSULTA ======
 $stmt = $link->prepare(
   "SELECT id,nombre,marca,modelo,precio,unidades,detalles,imagen
    FROM productos
    WHERE unidades<=?
    ORDER BY unidades ASC, nombre ASC"
 );
-$stmt->bind_param("i",$tope);
+$stmt->bind_param("i", $tope);
 $stmt->execute();
 $res = $stmt->get_result();
 
+// ====== ENCABEZADOS XHTML ======
 header('Content-Type: application/xhtml+xml; charset=UTF-8');
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
@@ -54,22 +57,22 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
           </tr>
         </thead>
         <tbody>
-        <?php while($row=$res->fetch_assoc()){ ?>
+        <?php while ($row = $res->fetch_assoc()) { ?>
           <tr>
             <td><?php echo (int)$row['id']; ?></td>
-            <td><?php echo htmlspecialchars($row['nombre'],ENT_QUOTES,'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($row['marca'],ENT_QUOTES,'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($row['modelo'],ENT_QUOTES,'UTF-8'); ?></td>
-            <td class="price">$<?php echo number_format((float)$row['precio'],2); ?></td>
+            <td><?php echo htmlspecialchars($row['nombre'], ENT_QUOTES, 'UTF-8'); ?></td>
+            <td><?php echo htmlspecialchars($row['marca'],  ENT_QUOTES, 'UTF-8'); ?></td>
+            <td><?php echo htmlspecialchars($row['modelo'], ENT_QUOTES, 'UTF-8'); ?></td>
+            <td class="price">$<?php echo number_format((float)$row['precio'], 2); ?></td>
+            <td><?php echo (int)$row['unidades'] <= 10
+                    ? '<span class="units-low">'.(int)$row['unidades'].'</span>'
+                    : (int)$row['unidades']; ?></td>
+            <td class="muted"><?php echo htmlspecialchars((string)$row['detalles'], ENT_QUOTES, 'UTF-8'); ?></td>
             <td>
-              <?php if((int)$row['unidades']<=10){ ?>
-                <span class="units-low"><?php echo (int)$row['unidades']; ?></span>
-              <?php } else { echo (int)$row['unidades']; } ?>
-            </td>
-            <td class="muted"><?php echo htmlspecialchars((string)$row['detalles'],ENT_QUOTES,'UTF-8'); ?></td>
-            <td>
-              <?php if(!empty($row['imagen'])){ ?>
-                <img class="prod" src="<?php echo htmlspecialchars($row['imagen'],ENT_QUOTES,'UTF-8'); ?>" alt="img" />
+              <?php if (!empty($row['imagen'])) { ?>
+                <img class="prod"
+                     src="<?php echo htmlspecialchars($row['imagen'], ENT_QUOTES, 'UTF-8'); ?>"
+                     alt="imagen de <?php echo htmlspecialchars($row['nombre'], ENT_QUOTES, 'UTF-8'); ?>" />
               <?php } ?>
             </td>
           </tr>
