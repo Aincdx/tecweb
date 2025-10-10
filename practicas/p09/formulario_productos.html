@@ -1,20 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Alta de productos</title>
+  <meta charset="UTF-8">
+  <title>Registro de Producto</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 420px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 22px;
+      letter-spacing: .5px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 4px rgba(0,123,255,0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
 <body>
-  <h1>Alta de productos</h1>
-  <form action="set_producto_v2.php" method="post">
-    <label>Nombre <input name="nombre" required></label><br>
-    <label>Modelo <input name="modelo" required></label><br>
-    <label>Marca <input name="marca" required></label><br>
-    <label>Precio <input type="number" step="0.01" name="precio" required></label><br>
-    <label>Stock <input type="number" name="stock" required></label><br>
-    <label>Descripción <textarea name="descripcion"></textarea></label><br>
-    <label>Imagen <input name="imagen"></label><br>
-    <button type="submit">Guardar</button>
-  </form>
+  <div class="container">
+    <h1>Registro de Producto</h1>
+    <form action="set_productov2.php" method="post">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="marca">Marca:</label>
+      <input type="text" id="marca" name="marca" required>
+
+      <label for="modelo">Modelo:</label>
+      <input type="text" id="modelo" name="modelo" required>
+
+      <label for="precio">Precio:</label>
+      <input type="number" id="precio" name="precio" step="0.01" required>
+
+      <label for="unidades">Unidades:</label>
+      <input type="number" id="unidades" name="unidades" required>
+
+      <label for="detalles">Detalles:</label>
+      <textarea id="detalles" name="detalles"></textarea>
+
+      <label for="imagen">Imagen (ruta):</label>
+      <input type="text" id="imagen" name="imagen">
+
+      <div class="btn-group">
+        <input type="submit" value="Guardar" class="btn">
+        <input type="reset" value="Limpiar" class="btn btn-secondary">
+        <a href="get_productos_vigentes.php" class="btn">Ver Vigentes</a>
+      </div>
+    </form>
+  </div>
 </body>
 </html>
