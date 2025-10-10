@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Alta de productos</title>
+</head>
+<body>
+  <h1>Alta de productos</h1>
+  <form action="set_producto_v2.php" method="post">
+    <label>Nombre <input name="nombre" required></label><br>
+    <label>Modelo <input name="modelo" required></label><br>
+    <label>Marca <input name="marca" required></label><br>
+    <label>Precio <input type="number" step="0.01" name="precio" required></label><br>
+    <label>Stock <input type="number" name="stock" required></label><br>
+    <label>Descripción <textarea name="descripcion"></textarea></label><br>
+    <label>Imagen <input name="imagen"></label><br>
+    <button type="submit">Guardar</button>
+  </form>
+</body>
+</html>

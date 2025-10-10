@@ -1,0 +1,70 @@
+<!-- formulario.php -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Registro al Concurso</title>
+  <style>ol,ul{list-style:none}</style>
+</head>
+<body>
+  <h1>Registro al Concurso “Chidos mis Tenis”</h1>
+  <p>Justifica por qué tus tenis se tienen que ir y participa.</p>
+
+  <!-- Ruta RELATIVA al mismo directorio -->
+  <form id="formularioTenis" action="concurso.php" method="post">
+    <h2>Información de Participación</h2>
+    <fieldset>
+      <legend>Información Personal</legend>
+      <ul>
+        <li><label for="form-name">Nombre:</label>
+            <input type="text" name="name" id="form-name" required></li>
+        <li><label for="form-email">E-mail:</label>
+            <input type="email" name="email" id="form-email" required></li>
+        <li><label for="form-tel">Teléfono:</label>
+            <input type="tel" name="phone" id="form-tel" required></li>
+        <li><label for="form-story">Mis tenis son tan feos porque...</label><br>
+            <textarea name="story" rows="4" cols="60" id="form-story" maxlength="300"
+              placeholder="No más de 300 caracteres"></textarea></li>
+      </ul>
+    </fieldset>
+
+    <h2>Diseña tus Mike personalizados</h2>
+    <fieldset>
+      <legend>Diseño</legend>
+
+      <fieldset>
+        <legend>Color (uno):</legend>
+        <ul>
+          <li><label><input type="radio" name="color" value="red"> Rojo</label></li>
+          <li><label><input type="radio" name="color" value="blue" checked> Azul</label></li>
+          <li><label><input type="radio" name="color" value="black"> Negro</label></li>
+          <li><label><input type="radio" name="color" value="silver"> Plateado</label></li>
+        </ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>Características (múltiples):</legend>
+        <ul>
+          <li><label><input type="checkbox" name="features[]" value="laces"> Cordones brillantes</label></li>
+          <li><label><input type="checkbox" name="features[]" value="logo" checked> Logo metálico</label></li>
+          <li><label><input type="checkbox" name="features[]" value="heels"> Suela luminosa</label></li>
+          <li><label><input type="checkbox" name="features[]" value="wifi"> WiFi integrado</label></li>
+        </ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>Talla</legend>
+        <select name="size" required>
+          <option>5</option><option>6</option><option>7</option><option>8</option>
+          <option>9</option><option>10</option><option>11</option><option>12</option><option>13</option>
+        </select>
+      </fieldset>
+    </fieldset>
+
+    <p>
+      <input type="submit" value="¡Chidos mis Tenis!">
+      <input type="reset">
+    </p>
+  </form>
+</body>
+</html>
