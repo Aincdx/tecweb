@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Producto - Tienda de Electrónicos</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 420px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 22px;
+      letter-spacing: .5px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 4px rgba(0,123,255,0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .error {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: -12px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    .input-error {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 4px rgba(220,53,69,0.3) !important;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registro de Producto - Electrónicos</h1>
+    <form id="formularioProducto" action="set_productov2.php" method="post">
+      <label for="nombre">Nombre: *</label>
+      <input type="text" id="nombre" name="nombre" maxlength="100" required>
+      <div class="error" id="error-nombre"></div>
+
+      <label for="marca">Marca: *</label>
+      <select id="marca" name="marca" required>
+        <option value="">Seleccione una marca</option>
+        <option value="Samsung">Samsung</option>
+        <option value="Apple">Apple</option>
+        <option value="Sony">Sony</option>
+        <option value="LG">LG</option>
+        <option value="Xiaomi">Xiaomi</option>
+        <option value="Huawei">Huawei</option>
+        <option value="Dell">Dell</option>
+        <option value="HP">HP</option>
+        <option value="Lenovo">Lenovo</option>
+        <option value="Asus">Asus</option>
+        <option value="Nintendo">Nintendo</option>
+        <option value="Microsoft">Microsoft</option>
+      </select>
+      <div class="error" id="error-marca"></div>
+
+      <label for="modelo">Modelo: *</label>
+      <input type="text" id="modelo" name="modelo" maxlength="25" required>
+      <div class="error" id="error-modelo"></div>
+
+      <label for="precio">Precio: *</label>
+      <input type="number" id="precio" name="precio" step="0.01" min="99.99" required>
+      <div class="error" id="error-precio"></div>
+
+      <label for="unidades">Unidades: *</label>
+      <input type="number" id="unidades" name="unidades" min="0" required>
+      <div class="error" id="error-unidades"></div>
+
+      <label for="detalles">Detalles:</label>
+      <textarea id="detalles" name="detalles" maxlength="250" placeholder="Descripción opcional del producto (máximo 250 caracteres)"></textarea>
+      <div class="error" id="error-detalles"></div>
+
+      <label for="imagen">Imagen (ruta):</label>
+      <input type="text" id="imagen" name="imagen" placeholder="Ruta de la imagen (opcional)">
+      <div class="error" id="error-imagen"></div>
+
+      <div class="btn-group">
+        <input type="submit" value="Guardar" class="btn">
+        <input type="reset" value="Limpiar" class="btn btn-secondary">
+        <a href="../p09/get_productos_vigentes.php" class="btn">Ver Vigentes</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Validaciones JavaScript según las especificaciones de la Práctica 10
+    
+    function mostrarError(campo, mensaje) {
+      const input = document.getElementById(campo);
+      const errorDiv = document.getElementById('error-' + campo);
+      
+      input.classList.add('input-error');
+      errorDiv.textContent = mensaje;
+      errorDiv.classList.add('show');
+    }
+    
+    function limpiarError(campo) {
+      const input = document.getElementById(campo);
+      const errorDiv = document.getElementById('error-' + campo);
+      
+      input.classList.remove('input-error');
+      errorDiv.classList.remove('show');
+    }
+    
+    function validarNombre() {
+      const nombre = document.getElementById('nombre').value.trim();
+      
+      if (nombre === '') {
+        mostrarError('nombre', 'El nombre es requerido');
+        return false;
+      }
+      
+      if (nombre.length > 100) {
+        mostrarError('nombre', 'El nombre debe tener 100 caracteres o menos');
+        return false;
+      }
+      
+      limpiarError('nombre');
+      return true;
+    }
+    
+    function validarMarca() {
+      const marca = document.getElementById('marca').value;
+      
+      if (marca === '') {
+        mostrarError('marca', 'La marca es requerida y debe seleccionarse de la lista');
+        return false;
+      }
+      
+      limpiarError('marca');
+      return true;
+    }
+    
+    function validarModelo() {
+      const modelo = document.getElementById('modelo').value.trim();
+      
+      if (modelo === '') {
+        mostrarError('modelo', 'El modelo es requerido');
+        return false;
+      }
+      
+      if (modelo.length > 25) {
+        mostrarError('modelo', 'El modelo debe tener 25 caracteres o menos');
+        return false;
+      }
+      
+      // Validar que sea alfanumérico (letras y números solamente)
+      const alfanumerico = /^[a-zA-Z0-9\s]+$/;
+      if (!alfanumerico.test(modelo)) {
+        mostrarError('modelo', 'El modelo debe ser texto alfanumérico (solo letras, números y espacios)');
+        return false;
+      }
+      
+      limpiarError('modelo');
+      return true;
+    }
+    
+    function validarPrecio() {
+      const precio = parseFloat(document.getElementById('precio').value);
+      
+      if (isNaN(precio)) {
+        mostrarError('precio', 'El precio es requerido');
+        return false;
+      }
+      
+      if (precio <= 99.99) {
+        mostrarError('precio', 'El precio debe ser mayor a $99.99');
+        return false;
+      }
+      
+      limpiarError('precio');
+      return true;
+    }
+    
+    function validarUnidades() {
+      const unidades = parseInt(document.getElementById('unidades').value);
+      
+      if (isNaN(unidades)) {
+        mostrarError('unidades', 'Las unidades son requeridas');
+        return false;
+      }
+      
+      if (unidades < 0) {
+        mostrarError('unidades', 'Las unidades deben ser mayor o igual a 0');
+        return false;
+      }
+      
+      limpiarError('unidades');
+      return true;
+    }
+    
+    function validarDetalles() {
+      const detalles = document.getElementById('detalles').value.trim();
+      
+      if (detalles.length > 250) {
+        mostrarError('detalles', 'Los detalles deben tener 250 caracteres o menos');
+        return false;
+      }
+      
+      limpiarError('detalles');
+      return true;
+    }
+    
+    function validarImagen() {
+      let imagen = document.getElementById('imagen').value.trim();
+      
+      // Si no se registra imagen, usar imagen por defecto
+      if (imagen === '') {
+        document.getElementById('imagen').value = 'assets/img/default-product.png';
+      }
+      
+      limpiarError('imagen');
+      return true;
+    }
+    
+    // Validación en tiempo real
+    document.getElementById('nombre').addEventListener('blur', validarNombre);
+    document.getElementById('marca').addEventListener('change', validarMarca);
+    document.getElementById('modelo').addEventListener('blur', validarModelo);
+    document.getElementById('precio').addEventListener('blur', validarPrecio);
+    document.getElementById('unidades').addEventListener('blur', validarUnidades);
+    document.getElementById('detalles').addEventListener('blur', validarDetalles);
+    document.getElementById('imagen').addEventListener('blur', validarImagen);
+    
+    // Validación al enviar el formulario
+    document.getElementById('formularioProducto').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const validaciones = [
+        validarNombre(),
+        validarMarca(),
+        validarModelo(),
+        validarPrecio(),
+        validarUnidades(),
+        validarDetalles(),
+        validarImagen()
+      ];
+      
+      const todoValido = validaciones.every(v => v === true);
+      
+      if (todoValido) {
+        // Si todo está válido, enviar el formulario
+        this.submit();
+      } else {
+        // Hacer scroll al primer error
+        const primerError = document.querySelector('.error.show');
+        if (primerError) {
+          primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+    
+    // Limpiar errores al resetear el formulario
+    document.querySelector('input[type="reset"]').addEventListener('click', function() {
+      const errores = document.querySelectorAll('.error');
+      const inputs = document.querySelectorAll('input, select, textarea');
+      
+      errores.forEach(error => error.classList.remove('show'));
+      inputs.forEach(input => input.classList.remove('input-error'));
+    });
+
+    // Manejar datos recibidos desde la tabla (POST)
+    window.addEventListener('load', function() {
+      // Verificar si hay datos en sessionStorage (enviados desde la tabla)
+      const datosProducto = sessionStorage.getItem('editarProducto');
+      if (datosProducto) {
+        const datos = JSON.parse(datosProducto);
+        
+        // Prellenar el formulario
+        document.getElementById('nombre').value = datos.nombre || '';
+        document.getElementById('marca').value = datos.marca || '';
+        document.getElementById('modelo').value = datos.modelo || '';
+        document.getElementById('precio').value = datos.precio || '';
+        document.getElementById('unidades').value = datos.unidades || '';
+        document.getElementById('detalles').value = datos.detalles || '';
+        document.getElementById('imagen').value = datos.imagen || '';
+        
+        // Cambiar título para indicar edición
+        document.querySelector('h1').textContent = 'Modificar Producto - ID: ' + datos.id;
+        
+        // Agregar campo oculto con el ID
+        let idInput = document.getElementById('producto_id');
+        if (!idInput) {
+          idInput = document.createElement('input');
+          idInput.type = 'hidden';
+          idInput.id = 'producto_id';
+          idInput.name = 'id';
+          document.querySelector('form').appendChild(idInput);
+        }
+        idInput.value = datos.id;
+        
+        // Cambiar acción del formulario para actualización
+        document.querySelector('form').action = 'update_producto.php';
+        
+        // Cambiar texto del botón
+        document.querySelector('input[type="submit"]').value = 'Actualizar Producto';
+        
+        // Limpiar sessionStorage
+        sessionStorage.removeItem('editarProducto');
+      }
+    });
+  </script>
+</body>
+</html>
