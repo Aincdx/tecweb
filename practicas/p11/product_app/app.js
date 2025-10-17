@@ -119,4 +119,135 @@ function init() {
      */
     var JsonString = JSON.stringify(baseJSON,null,2);
     document.getElementById("description").value = JsonString;
+    
+    // Agregar debounce para búsqueda en tiempo real (opcional)
+    var searchInput = document.getElementById('search');
+    if (searchInput) {
+        var debounceTimer;
+        searchInput.addEventListener('keyup', function(e) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(function() {
+                if (searchInput.value.length >= 2) {
+                    buscarProducto(e);
+                }
+            }, 300);
+        });
+    }
+}
+
+// NUEVA FUNCIÓN: Búsqueda flexible de productos por nombre, marca o detalles
+function buscarProducto(e) {
+    if (e) {
+        e.preventDefault();
+    }
+
+    // Obtener término de búsqueda
+    var termino = document.getElementById('search').value.trim();
+    
+    // Validar longitud mínima
+    if (termino.length < 2) {
+        setEstado('error');
+        renderResultados([]);
+        return;
+    }
+
+    // Establecer estado de carga
+    setEstado('cargando');
+
+    // Crear objeto de conexión
+    var client = getXMLHttpRequest();
+    client.open('GET', './backend/read.php?q=' + encodeURIComponent(termino), true);
+    client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    client.onreadystatechange = function () {
+        if (client.readyState == 4) {
+            if (client.status == 200) {
+                try {
+                    console.log('[BÚSQUEDA]\n' + client.responseText);
+                    
+                    // Parsear respuesta JSON
+                    let productos = JSON.parse(client.responseText);
+                    
+                    // Verificar si es array
+                    if (Array.isArray(productos)) {
+                        setEstado('ok');
+                        renderResultados(productos);
+                    } else {
+                        setEstado('error');
+                        renderResultados([]);
+                    }
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    setEstado('error');
+                    renderResultados([]);
+                }
+            } else {
+                console.error('Error HTTP:', client.status);
+                setEstado('error');
+                renderResultados([]);
+            }
+        }
+    };
+    
+    client.send();
+}
+
+// FUNCIÓN UTILITARIA: Renderizar lista de resultados
+function renderResultados(productos) {
+    var contenedor = document.getElementById("productos");
+    
+    if (!productos || productos.length === 0) {
+        contenedor.innerHTML = '<tr><td colspan="3">Sin coincidencias</td></tr>';
+        return;
+    }
+    
+    var template = '';
+    productos.forEach(function(producto) {
+        var descripcion = '';
+        descripcion += '<li>precio: $' + (producto.precio || 'N/A') + '</li>';
+        descripcion += '<li>unidades: ' + (producto.unidades || 'N/A') + '</li>';
+        descripcion += '<li>marca: ' + (producto.marca || 'N/A') + '</li>';
+        descripcion += '<li>detalles: ' + (producto.detalles || 'N/A') + '</li>';
+        
+        template += `
+            <tr>
+                <td>${producto.id}</td>
+                <td>${producto.nombre}</td>
+                <td><ul>${descripcion}</ul></td>
+            </tr>
+        `;
+    });
+    
+    contenedor.innerHTML = template;
+}
+
+// FUNCIÓN UTILITARIA: Manejar estados de la aplicación
+function setEstado(estado) {
+    var searchInput = document.getElementById('search');
+    
+    switch(estado) {
+        case 'cargando':
+            if (searchInput) {
+                searchInput.style.backgroundColor = '#fff3cd';
+                searchInput.style.borderColor = '#ffeaa7';
+            }
+            break;
+        case 'ok':
+            if (searchInput) {
+                searchInput.style.backgroundColor = '#d4edda';
+                searchInput.style.borderColor = '#c3e6cb';
+            }
+            break;
+        case 'error':
+            if (searchInput) {
+                searchInput.style.backgroundColor = '#f8d7da';
+                searchInput.style.borderColor = '#f5c6cb';
+            }
+            break;
+        default:
+            if (searchInput) {
+                searchInput.style.backgroundColor = '';
+                searchInput.style.borderColor = '';
+            }
+    }
 }
