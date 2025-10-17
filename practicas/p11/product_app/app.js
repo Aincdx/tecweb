@@ -10,17 +10,11 @@ var baseJSON = {
 
 // FUNCIÓN CALLBACK DE BOTÓN "Buscar"
 function buscarID(e) {
-    /**
-     * Revisar la siguiente información para entender porqué usar event.preventDefault();
-     * http://qbit.com.mx/blog/2013/01/07/la-diferencia-entre-return-false-preventdefault-y-stoppropagation-en-jquery/#:~:text=PreventDefault()%20se%20utiliza%20para,escuche%20a%20trav%C3%A9s%20del%20DOM
-     * https://www.geeksforgeeks.org/when-to-use-preventdefault-vs-return-false-in-javascript/
-     */
+
     e.preventDefault();
 
-    // SE OBTIENE EL ID A BUSCAR
     var id = document.getElementById('search').value;
 
-    // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
     var client = getXMLHttpRequest();
     client.open('POST', './backend/read.php', true);
     client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -64,14 +58,71 @@ function buscarID(e) {
 function agregarProducto(e) {
     e.preventDefault();
 
-    // SE OBTIENE DESDE EL FORMULARIO EL JSON A ENVIAR
-    var productoJsonString = document.getElementById('description').value;
-    // SE CONVIERTE EL JSON DE STRING A OBJETO
-    var finalJSON = JSON.parse(productoJsonString);
-    // SE AGREGA AL JSON EL NOMBRE DEL PRODUCTO
-    finalJSON['nombre'] = document.getElementById('name').value;
-    // SE OBTIENE EL STRING DEL JSON FINAL
-    productoJsonString = JSON.stringify(finalJSON,null,2);
+    // VALIDACIONES DEL CLIENTE
+    var errores = [];
+    
+    // Obtener valores del formulario
+    var nombre = document.getElementById('name').value.trim();
+    var productoJsonString = document.getElementById('description').value.trim();
+    
+    // Validar nombre
+    if (!nombre || nombre.length < 3 || nombre.length > 80) {
+        errores.push("El nombre debe tener entre 3 y 80 caracteres");
+    }
+    
+    // Validar y parsear JSON
+    var finalJSON;
+    try {
+        finalJSON = JSON.parse(productoJsonString);
+    } catch (error) {
+        errores.push("El JSON no tiene un formato válido");
+        mostrarErrores(errores);
+        return;
+    }
+    
+    // Validar campos del JSON
+    // Precio (debe ser numérico y mayor a 0)
+    if (!finalJSON.precio || isNaN(finalJSON.precio) || parseFloat(finalJSON.precio) <= 0) {
+        errores.push("El precio debe ser un número mayor a 0");
+    }
+    
+    // Unidades (debe ser entero >= 0)
+    if (finalJSON.unidades === undefined || isNaN(finalJSON.unidades) || parseInt(finalJSON.unidades) < 0) {
+        errores.push("Las unidades deben ser un número entero mayor o igual a 0");
+    }
+    
+    // Marca (2-50 caracteres)
+    if (!finalJSON.marca || finalJSON.marca.length < 2 || finalJSON.marca.length > 50) {
+        errores.push("La marca debe tener entre 2 y 50 caracteres");
+    }
+    
+    // Detalles (0-255 caracteres, puede estar vacío)
+    if (finalJSON.detalles && finalJSON.detalles.length > 255) {
+        errores.push("Los detalles no pueden exceder 255 caracteres");
+    }
+    
+    // Modelo (opcional, pero si existe debe tener longitud válida)
+    if (finalJSON.modelo && (finalJSON.modelo.length < 1 || finalJSON.modelo.length > 25)) {
+        errores.push("El modelo debe tener entre 1 y 25 caracteres");
+    }
+    
+    // Si hay errores, mostrarlos y no enviar
+    if (errores.length > 0) {
+        mostrarErrores(errores);
+        return;
+    }
+    
+    // Agregar nombre al JSON
+    finalJSON['nombre'] = nombre;
+    
+    // Normalizar valores
+    finalJSON.precio = parseFloat(finalJSON.precio);
+    finalJSON.unidades = parseInt(finalJSON.unidades);
+    finalJSON.detalles = finalJSON.detalles || '';
+    finalJSON.imagen = finalJSON.imagen || 'img/default.png';
+    
+    // Convertir a string JSON final
+    productoJsonString = JSON.stringify(finalJSON);
 
     // SE CREA EL OBJETO DE CONEXIÓN ASÍNCRONA AL SERVIDOR
     var client = getXMLHttpRequest();
@@ -79,8 +130,44 @@ function agregarProducto(e) {
     client.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
     client.onreadystatechange = function () {
         // SE VERIFICA SI LA RESPUESTA ESTÁ LISTA Y FUE SATISFACTORIA
-        if (client.readyState == 4 && client.status == 200) {
-            console.log(client.responseText);
+        if (client.readyState == 4) {
+            if (client.status == 200 || client.status == 201) {
+                try {
+                    var response = JSON.parse(client.responseText);
+                    
+                    // Mostrar mensaje del servidor
+                    window.alert(response.msg || response.message || "Operación completada");
+                    
+                    if (response.ok === true) {
+                        // Éxito: limpiar formulario y buscar el producto recién creado
+                        document.getElementById('name').value = '';
+                        document.getElementById('description').value = JSON.stringify(baseJSON, null, 2);
+                        
+                        // Buscar el producto recién insertado
+                        document.getElementById('search').value = nombre;
+                        buscarProducto();
+                    }
+                } catch (error) {
+                    console.error('Error parsing response:', error);
+                    window.alert("Error en la respuesta del servidor");
+                }
+            } else if (client.status == 400) {
+                try {
+                    var response = JSON.parse(client.responseText);
+                    window.alert("Error de validación: " + (response.msg || response.message || "Datos inválidos"));
+                } catch (error) {
+                    window.alert("Error de validación en el servidor");
+                }
+            } else if (client.status == 409) {
+                try {
+                    var response = JSON.parse(client.responseText);
+                    window.alert("Producto duplicado: " + (response.msg || response.message || "Ya existe un producto con ese nombre"));
+                } catch (error) {
+                    window.alert("Ya existe un producto con ese nombre");
+                }
+            } else {
+                window.alert("Error del servidor (código " + client.status + ")");
+            }
         }
     };
     client.send(productoJsonString);
@@ -113,10 +200,7 @@ function getXMLHttpRequest() {
 }
 
 function init() {
-    /**
-     * Convierte el JSON a string para poder mostrarlo
-     * ver: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON
-     */
+
     var JsonString = JSON.stringify(baseJSON,null,2);
     document.getElementById("description").value = JsonString;
     
@@ -250,4 +334,40 @@ function setEstado(estado) {
                 searchInput.style.borderColor = '';
             }
     }
+}
+
+// FUNCIÓN UTILITARIA: Mostrar errores de validación
+function mostrarErrores(errores) {
+    var mensaje = "Errores de validación:\n\n";
+    errores.forEach(function(error, index) {
+        mensaje += (index + 1) + ". " + error + "\n";
+    });
+    
+    window.alert(mensaje);
+    
+    // Resaltar campos con error
+    var nameInput = document.getElementById('name');
+    var descriptionInput = document.getElementById('description');
+    
+    if (nameInput) {
+        nameInput.style.borderColor = '#dc3545';
+        nameInput.style.backgroundColor = '#f8d7da';
+    }
+    
+    if (descriptionInput) {
+        descriptionInput.style.borderColor = '#dc3545';
+        descriptionInput.style.backgroundColor = '#f8d7da';
+    }
+    
+    // Quitar resaltado después de 3 segundos
+    setTimeout(function() {
+        if (nameInput) {
+            nameInput.style.borderColor = '';
+            nameInput.style.backgroundColor = '';
+        }
+        if (descriptionInput) {
+            descriptionInput.style.borderColor = '';
+            descriptionInput.style.backgroundColor = '';
+        }
+    }, 3000);
 }
