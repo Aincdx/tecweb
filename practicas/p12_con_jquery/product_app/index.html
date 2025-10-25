@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Product App</title>
+  </head>
+  <body>
+    <nav>
+      <a href="#">Product App</a>
+      <ul></ul>
+      <form id="product-search-form">
+        <input name="search" id="search" type="search" placeholder="Buscar por ID, nombre, marca o detalles">
+        <button type="submit" id="search-id-btn">Buscar ID</button>
+        <button type="button" id="search-flex-btn">Búsqueda Flexible</button>
+      </form>
+    </nav>
+
+    <div>
+      <div>
+        <form id="product-form">
+          <div>
+            <input type="text" id="name" placeholder="Nombre de producto">
+          </div>
+          <div>
+            <textarea id="description" cols="30" rows="10" placeholder="JSON de producto"></textarea>
+          </div>
+          <input type="hidden" id="productId">
+          <button type="submit" id="add-product-btn">Agregar Producto</button>
+          <button type="button" id="cancel-edit-btn" style="display:none;">Cancelar</button>
+        </form>
+      </div>
+
+      <div>
+        <ul></ul>
+        <table>
+          <thead>
+            <tr>
+              <td>Id</td>
+              <td>Nombre</td>
+              <td>Descripcion</td>
+              <td>Acciones</td>
+            </tr>
+          </thead>
+          <tbody id="products"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
