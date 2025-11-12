@@ -71,7 +71,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   </head>
   <body>
     <h1>PRODUCTO</h1>
-    <div class="table-wrapper">
+    <div class="table-wrapper"> 
       <table>
         <caption>Listado de productos</caption>
         <thead>
@@ -179,7 +179,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
           input.value = datos[key];
           form.appendChild(input);
         }
-        
         form.method = 'POST';
         form.action = 'formulario_productos_v2.php';
         
