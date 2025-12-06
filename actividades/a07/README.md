@@ -1,8 +1,5 @@
 # Actividad 7 - Programación Orientada a Objetos del lado del Servidor
 
-## Objetivo
-Familiarizarse con la sintaxis y funcionalidad de la Programación Orientada a Objetos (POO) del lado del servidor, mejorando la aplicación Web para la gestión de productos.
-
 ## Estructura Implementada
 
 ### 1. Clases Base (backend/myapi/)
@@ -57,31 +54,6 @@ echo $producto->getData();                         // 5. Respuesta en JSON
 
 El frontend (`index.html` y `app.js`) permanece sin cambios, mantiene compatibilidad con la API JSON.
 
-## Ventajas de la Implementación POO
-
-1. **Reutilización de código**: La lógica de base de datos se centraliza en una clase
-2. **Mantenibilidad**: Cambios en la BD solo requieren actualizar `DataBase.php` y `Products.php`
-3. **Escalabilidad**: Fácil agregar nuevas clases que hereden de `DataBase`
-4. **Seguridad**: Uso de `real_escape_string()` para prevenir SQL injection
-5. **Organización**: Código limpio y estructurado con namespaces
-
-## Instrucciones de Uso
-
-### Requisitos
-- Servidor XAMPP con MySQL
-- Base de datos `marketzone` con tabla `productos`
-
-### Pruebas de Funcionamiento
-
-1. **Listar productos**: Accede a `http://localhost/tecweb/actividades/a07/product_app/`
-2. **Agregar producto**: Usa el formulario en la aplicación
-3. **Buscar producto**: Utiliza la barra de búsqueda
-4. **Editar producto**: Haz clic en un producto para editarlo
-5. **Eliminar producto**: Usa el botón de eliminar
-
-## Nota Importante
-
-El código comentado ha sido removido después de verificar el funcionamiento correcto de todas las operaciones CRUD. Si necesitas ver el código anterior (procedural), consulta la práctica `p12`.
 
 ## Diagrama de Clases UML
 
@@ -113,8 +85,3 @@ El código comentado ha sido removido después de verificar el funcionamiento co
 │ +getData(): string                  │
 └─────────────────────────────────────┘
 ```
-
----
-**Autor**: Actividad 7 - POO del lado del servidor
-**Fecha**: 2025
-**Versión**: 1.0

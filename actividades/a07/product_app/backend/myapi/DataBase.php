@@ -1,10 +1,7 @@
 <?php
 namespace MyAPI;
 
-/**
- * Clase abstracta DataBase
- * Maneja la conexión a la base de datos MySQL
- */
+
 abstract class DataBase {
     /**
      * @var mysqli Conexión protegida a la base de datos
@@ -14,10 +11,10 @@ abstract class DataBase {
     /**
      * Constructor de la clase DataBase
      * 
-     * @param string $db Nombre de la base de datos
-     * @param string $user Usuario de MySQL (default: 'root')
-     * @param string $pass Contraseña de MySQL (default: '')
-     * @param string $host Host del servidor (default: 'localhost')
+     * @param string $db 
+     * @param string $user 
+     * @param string $pass
+     * @param string $host 
      */
     public function __construct($db, $user = 'root', $pass = '', $host = 'localhost') {
         // Intenta conectarse a la base de datos
